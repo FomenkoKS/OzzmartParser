@@ -1,7 +1,6 @@
 {
     "amazon": {
         "url": "https://www.amazon.com/s?me={me}&marketplaceID={marketplaceID}",
-        "pagination-container": ".s-pagination-container",
         "pagination-next": ".s-pagination-next",
         "pagination-disabled": "s-pagination-disabled",
         "product-card": "div.s-card-container",
@@ -12,7 +11,6 @@
     },
     "alibaba": {
         "url": "https://{marketplaceID}.en.alibaba.com/productlist.html",
-        "pagination-container": ".next-pagination-pages",
         "pagination-next": ".next-pagination-pages .next",
         "pagination-disabled": "disabled",
         "product-card": "div.product-item",
@@ -23,7 +21,6 @@
     },
     "woocommerce": {
         "url": "https://{marketplaceID}.en.alibaba.com/productlist.html",
-        "pagination-container": ".next-pagination-pages",
         "pagination-next": ".next",
         "pagination-disabled": "disabled",
         "product-card": "product-item",
