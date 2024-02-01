@@ -1,0 +1,43 @@
+{
+    "amazon": {
+        "url": "https://www.amazon.com/s?me={me}&marketplaceID={marketplaceID}",
+        "pagination-container": ".s-pagination-container",
+        "pagination-next": ".s-pagination-next",
+        "pagination-disabled": "s-pagination-disabled",
+        "product-card": "div.s-card-container",
+        "title": "//div[@data-cy='title-recipe']",
+        "price": "div.a-spacing-top-micro span.a-price span.a-offscreen",
+        "img_url": "//span[@data-component-type='s-product-image'] >> img.s-image",
+        "link": ".a-link-normal"
+    },
+    "alibaba": {
+        "url": "https://{marketplaceID}.en.alibaba.com/productlist.html",
+        "pagination-container": ".next-pagination-pages",
+        "pagination-next": ".next-pagination-pages .next",
+        "pagination-disabled": "disabled",
+        "product-card": "div.product-item",
+        "title": ".title-con",
+        "price": ".price",
+        "img_url": "div.img-box img",
+        "link": "a.product-image"
+    },
+    "woocommerce": {
+        "url": "https://{marketplaceID}.en.alibaba.com/productlist.html",
+        "pagination-container": ".next-pagination-pages",
+        "pagination-next": ".next",
+        "pagination-disabled": "disabled",
+        "product-card": "product-item",
+        "title": ".title-con",
+        "price": ".price",
+        "img_url": "div.img-box img",
+        "link": "a.product-image"
+    },
+    "shopify": {
+        "pagination-next": "//button[contains(@class, 'pagination-button--next')]",
+        "product-card": "//div[contains(@class, 'product-list-grid')]/div[contains(@class, 'product-item')]",
+        "title": "//div[contains(@class, 'product-title')]",
+        "price": "//div[contains(@class, 'product-price')]",
+        "img_url": "//img[contains(@class, 'product-image-img')]",
+        "link": "//a[contains(@class, 'product-link')]"
+    }
+}
