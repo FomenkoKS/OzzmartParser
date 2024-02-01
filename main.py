@@ -5,9 +5,11 @@ import json
 import re
 import requests
 from bs4 import BeautifulSoup
+import logging
+import time
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
 def get_domain(url):
@@ -26,7 +28,6 @@ def get_platform(url):
     platforms = ["woocommerce", "shopify"]
 
     for script in scripts:
-        print(script["src"])
         for platform in platforms:
             if platform in script["src"]:
                 return platform
@@ -34,7 +35,7 @@ def get_platform(url):
 
 def parse_product_page(page, data, market_locators):
     products = page.locator(market_locators["product-card"]).element_handles()
-    print("Find %s products" % len(products))
+    logging.info("Find %s products" % len(products))
 
     for product in products:
         title = product.query_selector(market_locators["title"]).inner_text()
@@ -88,27 +89,41 @@ def whois(url: str):
 
     return {"domain": domain, "platform": platform}
 
+def check_health(page, url):
+    amazon_link = page.get_by_role("link", name="Sorry! Something went wrong")
+    print(amazon_link)
+    page.screenshot(path="screenshot.png", full_page=True)
+    if amazon_link != None:
+        print("smthing wrong")
+        page.get_by_role("link", name="Amazon.com").click()
+        time.sleep(4)
+        page.goto(url)
+    
+    page.screenshot(path="screenshot.png", full_page=True)
+
 @app.post("/parse", tags=['parse'])
 def parse_by_url(url: str):
     platform = whois(url)['platform']
-    print("Parse by URL: %s" % platform)
+    logging.info("Parse by URL: %s" % platform)
     
     if platform in locators_mapping:
         market_locators = locators_mapping[platform]
         with sync_playwright() as playwright:
-            chromium = playwright.chromium
-            browser = chromium.launch()
-            page = browser.new_page()
+            firefox = playwright.firefox
+            browser = firefox.launch()
+            page = browser.new_page()            
             page.goto(url)
+            # check_health(page, url)         
+            
             next_button_disabled = False
             data = []
 
             while next_button_disabled == False:
-                print("Wait selector %s" % market_locators["product-card"])
+                logging.info("Wait selector %s" % market_locators["product-card"])
                 page.wait_for_selector(market_locators["product-card"])
                 next_button = page.locator(market_locators["pagination-next"])
                 data = parse_product_page(page, data, market_locators)
-                print("Collect %s products" % len(data))
+                logging.info("Collect %s products" % len(data))
                 
                 if len(next_button.element_handles()) == 0:
                     next_button_disabled = True
